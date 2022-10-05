@@ -1,8 +1,8 @@
-# Guaranteed Conservation of Momentum for Learning Particle-based Fluid Dynamics
+# Deep Momentum Conserving Fluids
 
 ![TensorFlow badge](https://img.shields.io/badge/TensorFlow-supported-brightgreen?style=flat&logo=tensorflow)
 
-This repository contains the code for our NeurIPS paper. Our algorithm makes it possible to learn highly accurate, efficient and momentum conserving fluid simulations based on particles.
+This repository contains the code for our NeurIPS paper *Guaranteed Conservation of Momentum for Learning Particle-based Fluid Dynamics*. Our algorithm makes it possible to learn highly accurate, efficient and momentum conserving fluid simulations based on particles.
 With the code published here, evaluations from the paper can be reconstructed, and new models can be trained.
 
 <p align="center"> <img src="canyon.gif" alt="canyon video"> </p>
