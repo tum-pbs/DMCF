@@ -1,0 +1,161 @@
+dataset:
+  name: ComplexData
+
+  dataset_path: # path to dataset
+  #cache_dir: ./logs/cache/
+
+model:
+  name: SymNet
+
+  ckpt_path: # path to checkpoint
+  layer_channels: [[[8]], [[16], [8], [4], [4]], [[32], [16], [8], [4]], [[32], [16], [8], [4]], [[32]], [[2]]]
+  kernel_size: [1, 8, 8]
+  sym_kernel_size: [1, 8, 8]
+  coordinate_mapping: ball_to_cube_volume_preserving
+  interpolation: linear
+  window: poly6
+  window_sym: peak
+  window_dens: poly6
+  strides: [1, 2, 4, 8] # sub-sampling factor for multi-scaling
+  particle_radii: [0.01, 0.02, 0.04, 0.08]
+  timestep: 0.0025 # depends on stride of dataloader (timestep * stride)
+  grav: -9.81
+  out_scale: [6.25e-06, 6.25e-06, 0.0] # 2D output
+  centralize: True
+  voxel_size: [0.005, 0.005, 0.0]
+  sym_axis: 1
+  rest_dens: 4.0
+  circular: False
+  add_merge: True
+  use_pre_adv: False
+
+  transformation:
+    grav_eqvar: [0, -1, 0]
+
+  loss:
+    weighted_mse:
+      typ: weighted_mse
+      fac: 1000.0
+      gamma: 0.5
+      neighbor_scale: 0.0625
+      #pre_scale: 0.04      
+
+  dens_norm: False
+  dens_feats: False
+  pres_feats: False
+
+pipeline:
+  name: Simulator
+  version: 2d
+
+  max_epoch: 50
+  batch_size: 2
+  iter: 1000
+  
+  window_bnds: [15000]
+  windows: [3, 5] 
+  time_blend: 200
+
+  #max_err: 0.0025 # 1/2 voxel
+  max_dens_err: 0.2 # 20% density error
+
+  warm_up_bnds: [
+      10000,
+      20000,
+      30000
+  ]
+  max_warm_up: [0, 5, 10, 20] 
+
+  its_bnds: []
+  iterations: [0] 
+
+  optimizer:
+    lr_boundaries: [
+      20000,
+      25000,
+      30000,
+      35000,
+      40000,
+      45000
+    ]
+    lr_values: [
+      0.001,
+      0.0005,
+      0.00025,
+      0.000125,
+      0.0000625,
+      0.00003125,
+      0.000015625
+    ]
+
+  main_log_dir: ./logs
+  train_sum_dir: ./train_log
+  output_dir: ./output
+  save_ckpt_freq: 1
+
+  # metrics:
+  #   dens_val:
+  #     typ: dense
+  #   max_dens_val:
+  #     typ: dense
+  #     use_max: True
+  #   mse_val:
+  #     typ: mse
+  #   chamfer_val:
+  #     typ: chamfer
+  #     mode: 0
+  #   chamfer_val_2:
+  #     typ: chamfer
+  #     mode: 1
+  #   emd:
+  #     typ: emd
+  #   vel_diff_val:
+  #     typ: hist
+  #     feat: vel
+    
+
+  data_generator:
+    translate: [-0.5, -0.5, 0.0]
+    scale: [1.0, 1.0, 0.0]
+
+    train:
+      stride: 1 # update timestep accordingly!
+      repeat: True
+      shuffle_buffer: 512
+      is2d: True
+      num_workers: 2
+      sample_cnt: 25
+      
+      augment:
+        jitter_inp: 
+          channels: 
+            pos: [0.0005, 0.0005, 0.0] # 1% of dx
+
+      # augment:
+      #   jitter: 
+      #     channels: 
+      #       pos: 0.001
+      #       vel: 0.001
+      #       grav: 0.001
+      #       box: 0.001
+      #       box_normals: 0.001
+        
+      #   shuffle: True
+
+      #   rotate:
+      #     strength: [0.0, 0.0, 1.0]
+
+    valid:
+      stride: 1
+      time_end: 50
+      random_start: 200
+
+    test:
+      stride: 1
+      time_start: 0
+      time_end: 400
+
+
+      
+    
+

@@ -1,0 +1,120 @@
+dataset:
+  name: ComplexData
+
+  dataset_path: # path to dataset
+  #cache_dir: ./logs/cache/
+
+model:
+  name: CConv
+
+  ckpt_path: # path to checkpoint
+  layer_channels: [32, 64, 64, 3]
+  kernel_size: [1, 4, 4]
+  coordinate_mapping: ball_to_cube_volume_preserving
+  interpolation: linear
+  window: poly6
+  window_dens: poly6
+  ignore_query_points: True
+  use_bnds: False
+  
+  particle_radii: [0.025] #[0.05, 0.1, 0.2]
+  timestep: 0.0025
+  grav: -9.81
+  out_scale: [6.25e-06, 6.25e-06, 0.0] # 2D output
+
+  loss:
+    weighted_mse:
+      typ: weighted_mse
+      fac: 1000.0
+      gamma: 0.5
+      neighbor_scale: 0.0625
+      #pre_scale: 0.04      
+
+pipeline:
+  name: Simulator
+  version: 2d
+
+  max_epoch: 50
+  batch_size: 2
+  iter: 1000
+
+  window_bnds: []
+  windows: [2] 
+  time_blend: 200
+
+  warm_up_bnds: []
+  max_warm_up: [0] 
+
+  its_bnds: []
+  iterations: [0] 
+
+  optimizer:
+    lr_boundaries: [
+      20000,
+      25000,
+      30000,
+      35000,
+      40000,
+      45000
+    ]
+    lr_values: [
+      0.001,
+      0.0005,
+      0.00025,
+      0.000125,
+      0.0000625,
+      0.00003125,
+      0.000015625
+    ]
+
+  main_log_dir: ./logs
+  train_sum_dir: ./train_log
+  output_dir: ./output
+  save_ckpt_freq: 1
+
+
+  data_generator:
+    translate: [-0.5, -0.5, 0.0]
+    scale: [1.0, 1.0, 0.0]
+
+    train:
+      stride: 1 # update timestep accordingly!
+      repeat: True
+      shuffle_buffer: 512
+      is2d: True
+      num_workers: 2
+      sample_cnt: 25
+      
+      augment:
+        jitter_inp: 
+          channels: 
+            pos: [0.0005, 0.0005, 0.0] # 1% of dx
+
+      # augment:
+      #   jitter: 
+      #     channels: 
+      #       pos: 0.001
+      #       vel: 0.001
+      #       grav: 0.001
+      #       box: 0.001
+      #       box_normals: 0.001
+        
+      #   shuffle: True
+
+      #   rotate:
+      #     strength: [0.0, 0.0, 1.0]
+
+    valid:
+      stride: 1
+      time_end: 50
+      random_start: 200
+
+    test:
+      stride: 1
+      time_start: 0
+      time_end: 400
+
+
+      
+    
+

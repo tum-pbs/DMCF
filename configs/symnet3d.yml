@@ -1,0 +1,146 @@
+dataset:
+  name: CConvData3D
+
+  dataset_path: # path to dataset
+  #cache_dir: ./logs/cache/
+
+model:
+  name: SymNet
+
+  ckpt_path: # path to checkpoint
+  layer_channels: [[[8]], [[16], [8], [4]], [[32], [16], [8]], [[32]], [[3]]] #[[32], [16], [8]], [[32]], [[3]]]
+  kernel_size: [4, 4, 4]
+  sym_kernel_size: [6, 6, 6]
+  coordinate_mapping: ball_to_cube_volume_preserving
+  interpolation: linear
+  window: poly6
+  window_sym: peak
+  window_dens: poly6
+  strides: [1, 2, 4] # sub-sampling factor for multi-scaling
+  particle_radii: [0.1, 0.2, 0.4]
+  timestep: 0.02 # depends on stride of dataloader (timestep * stride)
+  grav: -9.81
+  out_scale: [0.0078125, 0.0078125, 0.0078125] #[4.0e-03, 4.0e-03, 4.0e-03] # 2D output
+  centralize: True
+  voxel_size: [0.025, 0.025, 0.025]
+  sym_axis: 1
+  rest_dens: 8.0
+  circular: False
+  add_merge: True
+  use_pre_adv: False
+  use_acc: False
+
+  #transformation:
+  #  grav_eqvar: [0, -1, 0]
+
+  loss:
+    weighted_mse:
+      typ: weighted_mse
+      fac: 128.0
+      gamma: 0.5
+      neighbor_scale: 0.025
+      #pre_scale: 0.04      
+
+  dens_norm: False
+  dens_feats: False
+  pres_feats: False
+
+pipeline:
+  name: Simulator
+  version: 3d
+
+  max_epoch: 50
+  batch_size: 8
+  iter: 1000
+  
+  window_bnds: [15000]
+  windows: [2, 3] 
+  time_blend: 200
+
+  #max_err: 0.0025 # 1/2 voxel
+  max_dens_err: 0.1 # 20% density error
+
+  warm_up_bnds: [
+      20000,
+      30000,
+      40000
+  ]
+  max_warm_up: [0, 2, 3, 5] 
+
+  its_bnds: []
+  iterations: [0] 
+
+  optimizer:
+    lr_boundaries: [
+      20000,
+      25000,
+      30000,
+      35000,
+      40000,
+      45000
+    ]
+    lr_values: [
+      0.001,
+      0.0005,
+      0.00025,
+      0.000125,
+      0.0000625,
+      0.00003125,
+      0.000015625
+    ]
+
+  main_log_dir: ./logs
+  train_sum_dir: ./train_log
+  output_dir: ./output
+  save_ckpt_freq: 1
+
+
+  data_generator:
+    #translate: [-0.5, -0.5, -0.5]
+    scale: [1.0, 1.0, 1.0]
+
+    train:
+      stride: 1 # update timestep accordingly!
+      repeat: True
+      shuffle_buffer: 512
+      is2d: False
+      num_workers: 2
+      sample_cnt: 25
+      
+      augment:
+        jitter_inp: 
+          channels: 
+            pos: [0.001, 0.001, 0.001] # 1% of dx
+        rotate:
+          rot_axis: 1
+        #rotate:
+        #  strength: [1.0, 1.0, 1.0] 
+
+      # augment:
+      #   jitter: 
+      #     channels: 
+      #       pos: 0.001
+      #       vel: 0.001
+      #       grav: 0.001
+      #       box: 0.001
+      #       box_normals: 0.001
+        
+      #   shuffle: True
+
+      #   rotate:
+      #     strength: [0.0, 0.0, 1.0]
+
+    valid:
+      stride: 1
+      time_end: 10
+      random_start: 200
+
+    test:
+      stride: 1
+      time_start: 0
+      time_end: 50
+
+
+      
+    
+

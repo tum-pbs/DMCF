@@ -1,0 +1,14 @@
+tensorflow==2.5
+open3d==0.15.2
+msgpack
+msgpack-numpy
+zstandard
+dm-tree
+yapf
+pyyaml
+addict
+tqdm
+sklearn
+tensorpack
+lapsolver
+python-prctl

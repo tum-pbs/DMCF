@@ -1,0 +1,145 @@
+dataset:
+  name: Column2
+  type: column
+  res: 100
+  gravity: -10.0
+  dt: 0.0025
+
+  train: 
+    seed: 42
+    min_pts: 1 
+    max_pts: 40
+    data_cnt: 40
+    timesteps: 100
+
+  valid:
+    seed: 43
+    min_pts: 1
+    max_pts: 40
+    data_cnt: 10
+    timesteps: 100
+
+  # test:
+  #   seed: 44
+  #   pts_cnt: [40]
+  #   data_cnt: 1
+  #   timesteps: 50
+  test:
+    seed: 44
+    offset: 10.0
+    pts_cnt: [1, 5]
+    data_cnt: 2
+    timesteps: 200
+
+model:
+  name: HRNet
+
+  ckpt_path: # path to checkpoint
+  layer_channels: [[[8]], [[16], [8], [4], [4]], [[16], [8], [4], [4]], [[16]], [[1]]]
+  kernel_size: [1, 8, 1]
+  coordinate_mapping: ball_to_cube_volume_preserving
+  interpolation: linear
+  window: poly6
+  window_dens: poly6
+  strides: [1, 2, 4, 8] # sub-sampling factor for multi-scaling
+  particle_radii: [0.01, 0.02, 0.04, 0.08]
+  timestep: 0.0025 # depends on stride of dataloader (timestep * stride)
+  grav: -10.0
+  out_scale: [0.0, 6.25e-06, 0.0] # 2D output  
+  centralize: True
+  voxel_size: [0.0, 0.005, 0.0]
+  rest_dens: 2.0
+
+  circular: False
+  add_merge: True
+  use_pre_adv: False
+
+  loss:
+    weighted_mse:
+      typ: weighted_mse
+      fac: 1000.0
+      gamma: 0.5
+      neighbor_scale: 0.25
+      #pre_scale: 0.04      
+
+  dens_norm: False
+  dens_feats: False
+  pres_feats: False
+
+pipeline:
+  name: Simulator
+  version: v0
+
+  max_epoch: 50
+  batch_size: 4
+  iter: 1000
+
+  window_bnds: [15000]
+  windows: [3, 5] 
+  time_blend: 200
+
+  max_dens_err: 0.05 # 5% density error
+
+  warm_up_bnds: [
+      10000,
+      20000,
+      30000
+  ]
+  max_warm_up: [0, 5, 10, 20] 
+
+  its_bnds: []
+  iterations: [0] 
+
+  optimizer:
+    lr_boundaries: [
+      20000,
+      25000,
+      30000,
+      35000,
+      40000,
+      45000
+    ]
+    lr_values: [
+      0.001,
+      0.0005,
+      0.00025,
+      0.000125,
+      0.0000625,
+      0.00003125,
+      0.000015625
+    ]
+
+  main_log_dir: ./logs
+  train_sum_dir: ./train_log
+  output_dir: ./output
+  save_ckpt_freq: 1
+
+  data_generator:
+    translate: [0.0, 0.0, 0.0]
+    scale: [0.0, 1.0, 0.0]
+
+    train:
+      stride: 1 # update timestep accordingly!
+      repeat: True
+      shuffle_buffer: 512
+      is2d: True
+      num_workers: 1
+      sample_cnt: 1
+
+      augment:
+        jitter_inp: 
+          channels: 
+            pos: 0.0005 # 1% of dx
+
+    valid:
+      stride: 1
+      time_end: 10
+      random_start: 50
+
+    test:
+      stride: 1
+
+
+      
+    
+
