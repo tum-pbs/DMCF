@@ -1,4 +1,4 @@
-# Deep Momentum Conserving Fluids
+# Deep Momentum Conserving Fluids (DMCF)
 
 ![TensorFlow badge](https://img.shields.io/badge/TensorFlow-supported-brightgreen?style=flat&logo=tensorflow)
 
