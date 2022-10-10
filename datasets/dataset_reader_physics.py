@@ -123,11 +123,12 @@ class DatasetGroup:
                 self.train = Dataset(dataset_path=os.path.join(path, "train"),
                                      **dataset_cfg)
 
-            if os.path.exists(os.path.join(path, "valid")):
-                self.valid = Dataset(dataset_path=os.path.join(path, "valid"),
-                                     **dataset_cfg)
-            else:
-                self.valid = Dataset(dataset_path=path, **dataset_cfg)
+            if split != "test":
+                if os.path.exists(os.path.join(path, "valid")):
+                    self.valid = Dataset(dataset_path=os.path.join(path, "valid"),
+                                        **dataset_cfg)
+                else:
+                    self.valid = Dataset(dataset_path=path, **dataset_cfg)
 
             if split != "valid":
                 if os.path.exists(os.path.join(path, "test")):
@@ -136,6 +137,10 @@ class DatasetGroup:
                                         **dataset_cfg)
                 else:
                     self.test = Dataset(dataset_path=path, **dataset_cfg)
+
+                if split == "test":
+                    self.valid = self.test
+
 
     def gen_data(self, func, regen=False, **cfg):
         fldr = dict_hash(cfg)
