@@ -30,7 +30,7 @@ Optional:
 
 ## Datasets
 
-- *WBCSPH2D*: https://mega.nz/folder/m9QF2IJI#lMjsXcmE8_nN7JgLwp5vAw
+- *WBC-SPH*: https://mega.nz/folder/m9QF2IJI#lMjsXcmE8_nN7JgLwp5vAw
 - *Liquid3D* ([source](https://github.com/isl-org/DeepLagrangianFluids)): https://drive.google.com/file/d/1_-aAd_GHX8StyKWZLpvSWeGQ3vyytf7L
 - *WaterRamps* ([source](https://github.com/deepmind/deepmind-research/tree/master/learning_to_simulate)): ```bash download_waterramps.sh PATH/TO/OUTPUT_DIR```
 
@@ -40,9 +40,9 @@ The pretrained models are in the ```checkpoints``` subfolder.
 Run a pretrained mode by setting the path to the checkpoint with the ```ckpt_path``` argument.
 For example:
 ```bash
-python run_pipeline.py --cfg_file configs/symnet.yml \
+python run_pipeline.py --cfg_file configs/WBC-SPH.yml \
                        --dataset_path PATH/TO/DATASET \
-                       --ckpt_path checkpoints/symnet/ckpt \
+                       --ckpt_path checkpoints/WBC-SPH/ckpt \
                        --split test
 ```
 
@@ -50,13 +50,13 @@ python run_pipeline.py --cfg_file configs/symnet.yml \
 
 Simple 1D test run (data will be generated):
 ```bash
-python run_pipeline.py --cfg_file configs/column/symnet.yml \
+python run_pipeline.py --cfg_file configs/column/WBC-SPH.yml \
                        --split train
 ```
 
 Run with 2D pipeline:
 ```bash
-python run_pipeline.py --cfg_file configs/symnet.yml \
+python run_pipeline.py --cfg_file configs/WBC-SPH.yml \
                        --dataset_path PATH/TO/DATASET \
                        --split train
 ```
@@ -64,7 +64,7 @@ python run_pipeline.py --cfg_file configs/symnet.yml \
 ## Test
 
 ```bash
-python run_pipeline.py --cfg_file configs/symnet.yml \
+python run_pipeline.py --cfg_file configs/WBC-SPH.yml \
                        --dataset_path PATH/TO/DATASET \
                        --split test \
                        --pipeline.data_generator.test.time_end 800 \
@@ -90,7 +90,7 @@ python utils/draw_sim2d.py PATH/TO/HDF5_FILE OUTPUT/PATH \
 ## Validation
 
 ```bash
-python run_pipeline.py --cfg_file configs/symnet.yml \
+python run_pipeline.py --cfg_file configs/WBC-SPH.yml \
                        --dataset_path PATH/TO/DATASET \
                        --split valid
 ```
