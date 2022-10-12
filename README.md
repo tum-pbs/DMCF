@@ -25,7 +25,7 @@ Used environment: python3.7 with CUDA 11.3 and CUDNN 8.0.
 - Tensorpack DataFlow ```pip install --upgrade git+https://github.com/tensorpack/dataflow.git```
 
 Optional: 
-- Build FPS/EMD module ```cd utils; make```
+- Build FPS/EMD module ```cd utils; make; cd ..```
 - Install skia for visualization: ```python -m pip install skia-python```
 
 ## Datasets
