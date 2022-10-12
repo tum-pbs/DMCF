@@ -93,4 +93,7 @@ python utils/draw_sim2d.py PATH/TO/HDF5_FILE OUTPUT/PATH \
 python run_pipeline.py --cfg_file configs/symnet.yml \
                        --dataset_path PATH/TO/DATASET \
                        --split valid
-```
+## Licenses
+Code and scripts are under the MIT license.
+
+Data files are under the CDLA-Permissive-2.0 license.``
