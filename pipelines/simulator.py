@@ -91,7 +91,7 @@ class Simulator(BasePipeline):
         results = [[] for _ in range(len(inputs))]
 
         # dummy init
-        self.run_inference(inputs)
+        self.run_inference(inputs[:1])
 
         timing = []
         for i in range(len(inputs)):
