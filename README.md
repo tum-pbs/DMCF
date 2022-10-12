@@ -74,8 +74,8 @@ python run_pipeline.py --cfg_file configs/WBC-SPH.yml \
 ```
 *Note: The argument ```pipeline.data_generator.test.time_end```, ```pipeline.data_generator.valid.time_end```, ```pipeline.data_generator.valid.random_start```, and ```pipeline.test_compute_metric``` are examples how to overwrite corresponding entries in the config file.*
 
-The ```...time_end``` parameter account for the amount of frames used for evaluation. We used a value of *3200* for the *WBC-SPH* data set, *600* for *WaterRamps*, and *400* for *Liquid3d* for the evaluation in our paper.
-The generated test files are stored in the ```pipeline.output_dir``` folder, specified in the config. The output files have a *hdf5* format and can be rendered with the ```utils/draw_sim2d.py``` script.
+The ```...time_end``` parameter account for the number of frames used for inference and evaluation. We used a value of *3200* for the *WBC-SPH* data set, *600* for *WaterRamps*, and *400* for *Liquid3d*.
+The generated test files are stored in the ```pipeline.output_dir``` folder, specified in the config file. The output files have a *hdf5* format and can be rendered with the ```utils/draw_sim2d.py``` script.
 
 Rendering of a small sample sequence:
 ```bash
