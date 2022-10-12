@@ -69,9 +69,10 @@ python run_pipeline.py --cfg_file configs/symnet.yml \
                        --split test \
                        --pipeline.data_generator.test.time_end 800 \
                        --pipeline.data_generator.valid.time_end 800 \
+                       --pipeline.data_generator.valid.random_start 0 \
                        --pipeline.test_compute_metric true
 ```
-*Note: The argument ```pipeline.data_generator.test.time_end```, ```pipeline.data_generator.valid.time_end```, and ```pipeline.test_compute_metric``` are examples how to overwrite corresponding entries in the config file.*
+*Note: The argument ```pipeline.data_generator.test.time_end```, ```pipeline.data_generator.valid.time_end```, ```pipeline.data_generator.valid.random_start```, and ```pipeline.test_compute_metric``` are examples how to overwrite corresponding entries in the config file.*
 
 The generated test files are stored in the ```pipeline.output_dir``` folder, specified in the config. The output files have a *hdf5* format and can be rendered with the ```utils/draw_sim2d.py``` script.
 
