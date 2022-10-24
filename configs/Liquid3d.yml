@@ -20,7 +20,7 @@ model:
   particle_radii: [0.1, 0.2, 0.4]
   timestep: 0.02 # depends on stride of dataloader (timestep * stride)
   grav: -9.81
-  out_scale: [0.0078125, 0.0078125, 0.0078125] #[4.0e-03, 4.0e-03, 4.0e-03] # 2D output
+  out_scale: [0.0078125, 0.0078125, 0.0078125] 
   centralize: True
   voxel_size: [0.025, 0.025, 0.025]
   sym_axis: 1

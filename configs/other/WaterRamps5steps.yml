@@ -1,5 +1,5 @@
 dataset:
-  name: WaterRamps01
+  name: WaterRamps
 
   dataset_path: # path to dataset
   #cache_dir: ./logs/cache/
@@ -8,7 +8,7 @@ model:
   name: SymNet
 
   ckpt_path: # path to checkpoint
-  layer_channels: [[[8]], [[16], [8], [4]], [[32], [16], [8]], [[32], [16], [8]], [[32]], [[2]]]
+  layer_channels: [[[8]], [[16], [8], [4]], [[32], [16], [8]], [[32], [16], [8]], [[32]], [[3]]]
   kernel_size: [1, 8, 8]
   sym_kernel_size: [1, 8, 8]
   coordinate_mapping: ball_to_cube_volume_preserving
@@ -44,14 +44,14 @@ model:
 
 pipeline:
   name: Simulator
-  version: 2d_long
+  version: 2d
 
-  max_epoch: 400
+  max_epoch: 80
   batch_size: 16
-  iter: 100
-
-  window_bnds: [5000, 10000, 15000]
-  windows: [3, 5, 10, 20] 
+  iter: 1000
+  
+  window_bnds: [15000]
+  windows: [3, 5] 
   time_blend: 200
 
   #max_err: 0.0025 # 1/2 voxel
@@ -59,8 +59,8 @@ pipeline:
 
   warm_up_bnds: [
       20000,
-      25000,
-      30000
+      30000,
+      40000
   ]
   max_warm_up: [0, 5, 10, 20] 
 
@@ -126,10 +126,10 @@ pipeline:
       num_workers: 2
       sample_cnt: 25
       
-      #augment:
-      #  jitter_inp: 
-      #    channels: 
-      #      pos: [0.001, 0.001, 0.0] # 1% of dx
+      augment:
+        jitter_inp: 
+          channels: 
+            pos: [0.001, 0.001, 0.0] # 1% of dx
 
       # augment:
       #   jitter: 
@@ -153,8 +153,8 @@ pipeline:
     test:
       stride: 1
       time_start: 0
-      time_end: 600
-      #cnt: 10
+      time_end: 400
+      cnt: 10
 
 
       
