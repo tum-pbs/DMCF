@@ -21,6 +21,8 @@ Please cite [our paper](https://openreview.net/pdf?id=6niwHlzh10U) if you find t
 
 Used environment: python3.7 with CUDA 11.3 and CUDNN 8.0.
 - Install libcap-dev: ```sudo apt install libcap-dev```
+- Install cmake: ```sudo apt install cmake```
+- Update pip: ```pip install --upgrade pip```
 - Install requirements: ```pip install -r requirements.txt```
 - Tensorpack DataFlow ```pip install --upgrade git+https://github.com/tensorpack/dataflow.git```
 
@@ -74,7 +76,7 @@ python run_pipeline.py --cfg_file configs/WBC-SPH.yml \
 ```
 *Note: The argument ```pipeline.data_generator.test.time_end```, ```pipeline.data_generator.valid.time_end```, ```pipeline.data_generator.valid.random_start```, and ```pipeline.test_compute_metric``` are examples how to overwrite corresponding entries in the config file.*
 
-The ```...time_end``` parameter account for the number of frames used for inference and evaluation. We used a value of *3200* for the *WBC-SPH* data set, *600* for *WaterRamps*, and *600* for *Liquid3d*.
+The ```...time_end``` parameter account for the number of frames used for inference and evaluation. We used a value of *3200* for the *WBC-SPH* data set, *600* for *WaterRamps*, and *200* for *Liquid3d*.
 The generated test files are stored in the ```pipeline.output_dir``` folder, specified in the config file. The output files have a *hdf5* format and can be rendered with the ```utils/draw_sim2d.py``` script.
 
 Rendering of a small sample sequence:

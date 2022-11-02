@@ -60,12 +60,8 @@ pipeline:
   #max_err: 0.0025 # 1/2 voxel
   max_dens_err: 0.1 # 20% density error
 
-  warm_up_bnds: [
-      20000,
-      30000,
-      40000
-  ]
-  max_warm_up: [0, 2, 3, 5] 
+  warm_up_bnds: []
+  max_warm_up: [0] 
 
   its_bnds: []
   iterations: [0] 
