@@ -32,7 +32,7 @@ Optional:
 
 ## Datasets
 
-- *WBC-SPH*: https://mega.nz/folder/m9QF2IJI#lMjsXcmE8_nN7JgLwp5vAw
+- *WBC-SPH*: https://dataserv.ub.tum.de/index.php/s/m1693614 
 - *Liquid3d* ([source](https://github.com/isl-org/DeepLagrangianFluids)): https://drive.google.com/file/d/1_-aAd_GHX8StyKWZLpvSWeGQ3vyytf7L
 - *WaterRamps* ([source](https://github.com/deepmind/deepmind-research/tree/master/learning_to_simulate)): ```bash download_waterramps.sh PATH/TO/OUTPUT_DIR```
 
