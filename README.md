@@ -52,7 +52,7 @@ python run_pipeline.py --cfg_file configs/WBC-SPH.yml \
 
 Simple 1D test run (data will be generated):
 ```bash
-python run_pipeline.py --cfg_file configs/column/WBC-SPH.yml \
+python run_pipeline.py --cfg_file configs/column/hrnet.yml \
                        --split train
 ```
 
