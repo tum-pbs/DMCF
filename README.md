@@ -32,8 +32,8 @@ Optional:
 
 ## Datasets
 
-- *WBC-SPH*: https://dataserv.ub.tum.de/index.php/s/m1693614 
-- *Liquid3d* ([source](https://github.com/isl-org/DeepLagrangianFluids)): https://drive.google.com/file/d/1_-aAd_GHX8StyKWZLpvSWeGQ3vyytf7L
+- *WBC-SPH*: https://dataserv.ub.tum.de/index.php/s/m1693614
+- *Liquid3d* ([source](https://github.com/isl-org/DeepLagrangianFluids)): https://drive.google.com/file/d/1b3OjeXnsvwUAeUq2Z0lcrX7j9U7zLO07
 - *WaterRamps* ([source](https://github.com/deepmind/deepmind-research/tree/master/learning_to_simulate)): ```bash download_waterramps.sh PATH/TO/OUTPUT_DIR```
 
 ## Pretrained Models:
