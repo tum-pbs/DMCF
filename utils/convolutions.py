@@ -48,7 +48,7 @@ class ContinuousConv(tf.keras.layers.Layer):
     The input points are :math:`\mathbf x_i` and the input features are :math:`f_i`.
     The normalization :math:`\frac{1}{\psi(\mathbf x)}` can be turned on with the **normalize** parameter.
     The per neighbor value :math:`a(\mathbf x_i, \mathbf x)` can be used to implement window functions; see parameter **window_function**.
-    The function :math:`\Lambda` for looking up filter values is defined by the parameters **coordinate_mapping**, **symmetry_mapping** and **interpolation**.
+    The function :math:`\Lambda` for looking up filter values is defined by the parameters **coordinate_mapping** and **interpolation**.
 
     Example:
       This shows a minimal example of how to use the layer::
@@ -93,12 +93,6 @@ class ContinuousConv(tf.keras.layers.Layer):
               a cube.
             * 'ball_to_cube_volume_preserving' is using a more expensive volume
               preserving mapping to map a sphere to a cube.
-            * 'identity' no mapping is applied to the coordinates.
-
-        symmetry_mapping: The mapping of the coordinates is adjusted to maintain the given symmetry.
-          One of 'anti_symmetry', 'radial_symmetry', 'identity'.
-            * 'anti_symmetry' point symmetry with negation.
-            * 'radial_symmetry' rotation invariant mapping.
             * 'identity' no mapping is applied to the coordinates.
 
         interpolation: One of 'linear', 'linear_border',
@@ -146,6 +140,12 @@ class ContinuousConv(tf.keras.layers.Layer):
         in_channels: This keyword argument is for compatibility with Pytorch.
           It is not used and in_channels will be inferred at the first execution
           of the layer.
+          
+        symmetric: If True an anti-symmetric kernel is used.
+        
+        sym_axis: The mirror axis used to generate the anti-symmetric kernel.
+
+        circular: If True a circular kernel is used (i.e. rotational invariant).
     """
     def __init__(
         self,
@@ -159,7 +159,6 @@ class ContinuousConv(tf.keras.layers.Layer):
         bias_regularizer=None,
         align_corners=True,
         coordinate_mapping='ball_to_cube_radial',
-        #symmetry_mapping='identity',
         interpolation='linear',
         normalize=True,
         radius_search_ignore_query_points=False,
@@ -186,7 +185,6 @@ class ContinuousConv(tf.keras.layers.Layer):
         self.bias_regularizer = regularizers.get(bias_regularizer)
         self.align_corners = align_corners
         self.coordinate_mapping = coordinate_mapping
-        #self.symmetry_mapping = symmetry_mapping
         self.interpolation = interpolation
         self.normalize = normalize
         self.radius_search_ignore_query_points = radius_search_ignore_query_points
@@ -426,14 +424,13 @@ class ContinuousConv(tf.keras.layers.Layer):
             'neighbors_importance': neighbors_importance,
             'align_corners': self.align_corners,
             'coordinate_mapping': self.coordinate_mapping,
-            #'symmetry_mapping': self.symmetry_mapping,
             'interpolation': self.interpolation,
             'normalize': self.normalize,
         }
 
         out_features = ml3d.ops.continuous_conv(**self._conv_values)
 
-        if self.symmetric:  # or self.symmetry_mapping == 'anti_symmetry':
+        if self.symmetric:
             weights = tf.reshape(
                 kernel,
                 (kernel.shape[0], kernel.shape[1], kernel.shape[2], 1, -1))
@@ -451,7 +448,6 @@ class ContinuousConv(tf.keras.layers.Layer):
                 'neighbors_importance': neighbors_importance,
                 'align_corners': self.align_corners,
                 'coordinate_mapping': self.coordinate_mapping,
-                #'symmetry_mapping': self.symmetry_mapping,
                 'interpolation': self.interpolation,
                 'normalize': self.normalize,
             }
@@ -661,7 +657,6 @@ class SparseConv(tf.keras.layers.Layer):
             'neighbors_row_splits': self.nns.neighbors_row_splits,
             'align_corners': False,
             'coordinate_mapping': 'identity',
-            #'symmetry_mapping': 'identity',
             'interpolation': 'nearest_neighbor',
             'normalize': self.normalize,
         }
@@ -872,7 +867,6 @@ class SparseConvTranspose(tf.keras.layers.Layer):
             'neighbors_row_splits': neighbors_row_splits,
             'align_corners': False,
             'coordinate_mapping': 'identity',
-            #'symmetry_mapping' : 'identity',
             'interpolation': 'nearest_neighbor',
             'normalize': self.normalize,
         }
